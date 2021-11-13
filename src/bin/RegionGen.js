@@ -29,8 +29,8 @@ class RegionGenerator {
             LandKeys,
           ),
         );
+        RegionModel.land_blueprint[countA] = GarbageArray;
       }
-      RegionModel.land_blueprint.push(GarbageArray);
       GarbageArray = [];
     }
     return RegionModel;
@@ -73,84 +73,84 @@ class RegionGenerator {
     ColDepth = 3,
   ) {
     while (RowDepth >= 0) {
+      RowDepth -= 1;
       while (ColDepth >= 0) {
-        if ((RowNumber === 0 && ColumnNumber === 0) || Element === 'Pl-') {
-          return true;
-        }
+        ColDepth -= 1;
+        if ((RowNumber === 0 && ColumnNumber === 0) || Element === 'Pl-') return true;
+        if (RowNumber - RowDepth < 0 && ColumnNumber - ColDepth < 0) continue;
         if (
           ColumnNumber === 0
-          && (RegionModel.land_blueprint[RowNumber][ColumnNumber + ColDepth]
-            === Element
-            || RegionModel.land_blueprint[RowNumber - RowDepth][
+          && ((RowNumber - RowDepth >= 0
+            && RegionModel.land_blueprint[RowNumber - RowDepth][
               ColumnNumber + ColDepth
-            ] === Element
+            ] === Element)
             || RegionModel.land_blueprint[RowNumber + RowDepth][
               ColumnNumber + ColDepth
             ] === Element)
-        ) {
-          return false;
-        }
+        ) { return false; }
+
         if (
           RowNumber === 0
-          && (RegionModel.land_blueprint[RowNumber + RowDepth][
-            ColumnNumber - ColDepth
-          ] === Element
+          && ((ColumnNumber - ColDepth >= 0
+            && RegionModel.land_blueprint[RowNumber + RowDepth][
+              ColumnNumber - ColDepth
+            ] === Element)
             || RegionModel.land_blueprint[RowNumber + RowDepth][
               ColumnNumber + ColDepth
             ] === Element)
-        ) {
-          return false;
-        }
+        ) { return false; }
+
         if (
           ColumnNumber === RegionModel.length - 1
           && RowNumber === RegionModel.breadth - 1
+          && RowNumber - RowDepth >= 0
+          && ColumnNumber - ColDepth >= 0
           && RegionModel.land_blueprint[RowNumber - RowDepth][
             ColumnNumber - ColDepth
           ] === Element
-        ) {
-          return false;
-        }
+        ) { return false; }
+
         if (
           RowNumber === RegionModel.breadth - 1
+          && RowNumber - RowDepth >= 0
+          && ColumnNumber - ColDepth >= 0
           && (RegionModel.land_blueprint[RowNumber - RowDepth][
             ColumnNumber - ColDepth
           ] === Element
             || RegionModel.land_blueprint[RowNumber - RowDepth][
               ColumnNumber + ColDepth
             ] === Element)
-        ) {
-          return false;
-        }
+        ) { return false; }
+
         if (
           ColumnNumber === RegionModel.length - 1
+          && RowNumber - RowDepth >= 0
+          && ColumnNumber - ColDepth >= 0
           && (RegionModel.land_blueprint[RowNumber - RowDepth][
             ColumnNumber - ColDepth
           ] === Element
             || RegionModel.land_blueprint[RowNumber + RowDepth][
               ColumnNumber - ColDepth
             ] === Element)
-        ) {
-          return false;
-        }
+        ) { return false; }
+
         if (
-          RegionModel.land_blueprint[RowNumber + RowDepth][
+          RowNumber - RowDepth >= 0
+          && ColumnNumber - ColDepth >= 0
+          && (RegionModel.land_blueprint[RowNumber + RowDepth][
             ColumnNumber - ColDepth
           ] === Element
-          || RegionModel.land_blueprint[RowNumber + RowDepth][
-            ColumnNumber + ColDepth
-          ] === Element
-          || RegionModel.land_blueprint[RowNumber - RowDepth][
-            ColumnNumber - ColDepth
-          ] === Element
-          || RegionModel.land_blueprint[RowNumber - RowDepth][
-            ColumnNumber + ColDepth
-          ] === Element
-        ) {
-          return false;
-        }
-        ColDepth -= 1;
+            || RegionModel.land_blueprint[RowNumber + RowDepth][
+              ColumnNumber + ColDepth
+            ] === Element
+            || RegionModel.land_blueprint[RowNumber - RowDepth][
+              ColumnNumber - ColDepth
+            ] === Element
+            || RegionModel.land_blueprint[RowNumber - RowDepth][
+              ColumnNumber + ColDepth
+            ] === Element)
+        ) { return false; }
       }
-      RowDepth -= 1;
     }
     return true;
   }

@@ -1,6 +1,6 @@
 {
-  "name": "@jericho-community/genesis-world-gen",
-  "version": "0.0.1",
+  "name": "@sidislive/genesis-world-gen",
+  "version": "1.0.0",
   "description": "World Generator 2D for Jericho Discord Bot - Private Sub-Project",
   "main": "./src/index.js",
   "module": "./src/index.mjs",

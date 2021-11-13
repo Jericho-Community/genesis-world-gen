@@ -58,8 +58,8 @@ class RegionGenerator {
       ? GarbageElement
       : undefined;
     GarbageElement = RegionGenerator.#selectionWithOccurences([
-      { chance: Math.floor(Math.random() * 10) + 30, result: 'Pl-' },
-      { chance: Math.floor(Math.random() * 10) + 5, result: GarbageElement },
+      { chance: Math.floor(Math.random() * 5) + 30, result: 'Pl-' },
+      { chance: Math.floor(Math.random() * 15) + 5, result: GarbageElement },
     ]);
     return GarbageElement ?? 'Pl-';
   }

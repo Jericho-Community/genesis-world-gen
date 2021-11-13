@@ -81,75 +81,100 @@ class RegionGenerator {
         if (
           ColumnNumber === 0
           && ((RowNumber - RowDepth >= 0
+            && RegionModel.land_blueprint[RowNumber - RowDepth] !== undefined
             && RegionModel.land_blueprint[RowNumber - RowDepth][
               ColumnNumber + ColDepth
             ] === Element)
-            || RegionModel.land_blueprint[RowNumber + RowDepth][
-              ColumnNumber + ColDepth
-            ] === Element)
-        ) { return false; }
+            || (RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
+              && RegionModel.land_blueprint[RowNumber + RowDepth][
+                ColumnNumber + ColDepth
+              ] === Element))
+        ) {
+          return false;
+        }
 
         if (
           RowNumber === 0
           && ((ColumnNumber - ColDepth >= 0
+            && RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
             && RegionModel.land_blueprint[RowNumber + RowDepth][
               ColumnNumber - ColDepth
             ] === Element)
-            || RegionModel.land_blueprint[RowNumber + RowDepth][
-              ColumnNumber + ColDepth
-            ] === Element)
-        ) { return false; }
+            || (RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
+              && RegionModel.land_blueprint[RowNumber + RowDepth][
+                ColumnNumber + ColDepth
+              ] === Element))
+        ) {
+          return false;
+        }
 
         if (
           ColumnNumber === RegionModel.length - 1
           && RowNumber === RegionModel.breadth - 1
           && RowNumber - RowDepth >= 0
           && ColumnNumber - ColDepth >= 0
+          && RegionModel.land_blueprint[RowNumber - RowDepth] !== undefined
           && RegionModel.land_blueprint[RowNumber - RowDepth][
             ColumnNumber - ColDepth
           ] === Element
-        ) { return false; }
+        ) {
+          return false;
+        }
 
         if (
           RowNumber === RegionModel.breadth - 1
           && RowNumber - RowDepth >= 0
           && ColumnNumber - ColDepth >= 0
-          && (RegionModel.land_blueprint[RowNumber - RowDepth][
-            ColumnNumber - ColDepth
-          ] === Element
-            || RegionModel.land_blueprint[RowNumber - RowDepth][
-              ColumnNumber + ColDepth
+          && ((RegionModel.land_blueprint[RowNumber - RowDepth] !== undefined
+            && RegionModel.land_blueprint[RowNumber - RowDepth][
+              ColumnNumber - ColDepth
             ] === Element)
-        ) { return false; }
+            || (RegionModel.land_blueprint[RowNumber - RowDepth] !== undefined
+              && RegionModel.land_blueprint[RowNumber - RowDepth][
+                ColumnNumber + ColDepth
+              ] === Element))
+        ) {
+          return false;
+        }
 
         if (
           ColumnNumber === RegionModel.length - 1
           && RowNumber - RowDepth >= 0
           && ColumnNumber - ColDepth >= 0
-          && (RegionModel.land_blueprint[RowNumber - RowDepth][
-            ColumnNumber - ColDepth
-          ] === Element
-            || RegionModel.land_blueprint[RowNumber + RowDepth][
+          && ((RegionModel.land_blueprint[RowNumber - RowDepth] !== undefined
+            && RegionModel.land_blueprint[RowNumber - RowDepth][
               ColumnNumber - ColDepth
             ] === Element)
-        ) { return false; }
+            || (RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
+              && RegionModel.land_blueprint[RowNumber + RowDepth][
+                ColumnNumber - ColDepth
+              ] === Element))
+        ) {
+          return false;
+        }
 
         if (
           RowNumber - RowDepth >= 0
           && ColumnNumber - ColDepth >= 0
-          && (RegionModel.land_blueprint[RowNumber + RowDepth][
-            ColumnNumber - ColDepth
-          ] === Element
-            || RegionModel.land_blueprint[RowNumber + RowDepth][
-              ColumnNumber + ColDepth
-            ] === Element
-            || RegionModel.land_blueprint[RowNumber - RowDepth][
+          && ((RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
+            && RegionModel.land_blueprint[RowNumber + RowDepth][
               ColumnNumber - ColDepth
-            ] === Element
-            || RegionModel.land_blueprint[RowNumber - RowDepth][
-              ColumnNumber + ColDepth
             ] === Element)
-        ) { return false; }
+            || (RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
+              && RegionModel.land_blueprint[RowNumber + RowDepth][
+                ColumnNumber + ColDepth
+              ] === Element)
+            || (RegionModel.land_blueprint[RowNumber - RowDepth] !== undefined
+              && RegionModel.land_blueprint[RowNumber - RowDepth][
+                ColumnNumber - ColDepth
+              ] === Element)
+            || (RegionModel.land_blueprint[RowNumber - RowDepth] !== undefined
+              && RegionModel.land_blueprint[RowNumber - RowDepth][
+                ColumnNumber + ColDepth
+              ] === Element))
+        ) {
+          return false;
+        }
       }
     }
     return true;

@@ -25,6 +25,7 @@
     "no-nested-ternary": "off",
     "no-unused-expressions": "off",
     "default-param-last": "off",
-    "no-continue": "off"
+    "no-continue": "off",
+    "consistent-return": "off"
   }
 }

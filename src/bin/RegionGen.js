@@ -44,24 +44,47 @@ class RegionGenerator {
     LandKeys,
   ) {
     let GarbageElement = null;
-    let Occurences = 10;
-    while (Occurences > 0) {
-      GarbageElement = RawLandJson[
-        `${LandKeys[Math.floor(Math.random() * (LandKeys.length - 1))]}`
-      ].prefix;
-      GarbageElement = RegionGenerator.#DepthCompareChecks(
-        RegionModel,
-        RowNumber,
-        ColumnNumber,
-        GarbageElement,
-        Math.floor(Math.random() * 4) + 1,
-        Math.floor(Math.random() * 3) + 1,
-      )
-        ? GarbageElement
-        : undefined;
-      Occurences = GarbageElement ? 0 : Occurences - 1;
-    }
+    GarbageElement = RawLandJson[
+      `${LandKeys[Math.floor(Math.random() * (LandKeys.length - 1))]}`
+    ].prefix;
+    GarbageElement = RegionGenerator.#DepthCompareChecks(
+      RegionModel,
+      RowNumber,
+      ColumnNumber,
+      GarbageElement,
+      Math.floor(Math.random() * 4) + 0,
+      Math.floor(Math.random() * 4) + 0,
+    )
+      ? GarbageElement
+      : undefined;
+    GarbageElement = RegionGenerator.#selectionWithOccurences([
+      { chance: Math.floor(Math.random() * 10) + 30, result: 'Pl-' },
+      { chance: Math.floor(Math.random() * 10) + 5, result: GarbageElement },
+    ]);
     return GarbageElement ?? 'Pl-';
+  }
+
+  static #selectionWithOccurences(choices) {
+    const ModernChoices = [];
+    let totalWeight = 0.0;
+    for (let i = 0; i < choices.length; i++) {
+      if (choices[i].chance > 0.0) {
+        ModernChoices.push(choices[i]);
+        totalWeight += choices[i].chance;
+      }
+    }
+
+    // Pick a random value from [0,1)
+    const value = Math.random() * totalWeight;
+
+    // Iterate over possibilities until we find the selected one
+    let chanceCovered = 0.0;
+    for (let i = 0; i < ModernChoices.length; i++) {
+      chanceCovered += ModernChoices[i].chance;
+      if (value < chanceCovered) {
+        return ModernChoices[i].result;
+      }
+    }
   }
 
   static #DepthCompareChecks(
@@ -73,11 +96,13 @@ class RegionGenerator {
     ColDepth = 3,
   ) {
     while (RowDepth >= 0) {
-      RowDepth -= 1;
       while (ColDepth >= 0) {
-        ColDepth -= 1;
         if ((RowNumber === 0 && ColumnNumber === 0) || Element === 'Pl-') return true;
-        if (RowNumber - RowDepth < 0 && ColumnNumber - ColDepth < 0) continue;
+        if (RowNumber - RowDepth < 0 && ColumnNumber - ColDepth < 0) {
+          RowDepth -= 1;
+          ColDepth -= 1;
+          continue;
+        }
         if (
           ColumnNumber === 0
           && ((RowNumber - RowDepth >= 0
@@ -95,15 +120,14 @@ class RegionGenerator {
 
         if (
           RowNumber === 0
+          && RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
           && ((ColumnNumber - ColDepth >= 0
-            && RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
             && RegionModel.land_blueprint[RowNumber + RowDepth][
               ColumnNumber - ColDepth
             ] === Element)
-            || (RegionModel.land_blueprint[RowNumber + RowDepth] !== undefined
-              && RegionModel.land_blueprint[RowNumber + RowDepth][
-                ColumnNumber + ColDepth
-              ] === Element))
+            || RegionModel.land_blueprint[RowNumber + RowDepth][
+              ColumnNumber + ColDepth
+            ] === Element)
         ) {
           return false;
         }
@@ -175,7 +199,9 @@ class RegionGenerator {
         ) {
           return false;
         }
+        ColDepth -= 1;
       }
+      RowDepth -= 1;
     }
     return true;
   }
